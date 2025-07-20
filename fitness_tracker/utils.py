@@ -1,5 +1,6 @@
 import csv
-from datetime import datetime
+
+GOAL_KEY = "GOAL_ENTRY"
 
 class StepEntry:
     def __init__(self, date: str, steps: int):
@@ -26,3 +27,16 @@ def write_data(filename, entries):
         writer.writerow(["date", "steps"])
         for entry in entries:
             writer.writerow([entry.date, entry.steps])
+
+def get_goal(entries):
+    for entry in entries:
+        if entry.date == GOAL_KEY:
+            return entry.steps
+    return 10000  # default goal if not found
+
+def set_goal(entries, new_goal):
+    for entry in entries:
+        if entry.date == GOAL_KEY:
+            entry.steps = new_goal
+            return
+    entries.append(StepEntry(GOAL_KEY, new_goal))
